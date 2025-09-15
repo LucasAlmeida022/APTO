@@ -6,8 +6,8 @@ from os.path import join, exists, isdir
 from os import listdir, makedirs
 import mediapipe as mp
 
-DIR_FOTOS = r"C:\Users\lucas\OneDrive\Desktop\ATP\Fotos"
-DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces"
+DIR_FOTOS = r"C:\Users\lucas\OneDrive\Desktop\ATP\Fotos" #troque o diretório de fotos
+DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces" #troque o diretório de fotos
 
 detector = mp.solutions.face_detection.FaceDetection(model_selection=1, min_detection_confidence=0.5)
 

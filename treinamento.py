@@ -5,7 +5,7 @@ from os.path import join, isfile, isdir
 import pyodbc
 
 # Diretório com as fotos já recortadas em 180x180
-DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces"
+DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces" #troque o diretório de fotos
 
 # Modo do detector: "hog" (rápido, CPU) ou "cnn" (mais preciso, pesado)
 MODO_FACE = "hog"

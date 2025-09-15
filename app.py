@@ -9,12 +9,12 @@ app = Flask(__name__)
 
 # Configurações do banco de dados
 CONN_STR = (
-    "DRIVER={ODBC Driver 18 for SQL Server};"
-    "SERVER=LUCAS;"        # ou "localhost\\SQLEXPRESS"
-    "DATABASE=APTO_TESTE;"
-    "Trusted_Connection=yes;"      # indica autenticação do Windows
-    "TrustServerCertificate=yes;"  # evita problemas de certificado SSL
-    "Encrypt=yes;"
+    "DRIVER={ODBC Driver 18 for SQL Server};" #drive necessário para realizar a conexão do banco de dados
+    "SERVER=LUCAS;"       #altetar o nome de acordo com o nome do SEU SERVER no SQLSERVER 
+    "DATABASE=APTO_TESTE;" #base de dados precisa aletarar para que estivemos usando no momento
+    "Trusted_Connection=yes;"      # indica autenticação do Windows não precisa altearr
+    "TrustServerCertificate=yes;"  # evita problemas de certificado SSL,não precisa alterar
+    "Encrypt=yes;" #sempre deve estar dessa forma
 )
 
 DIST_THRESHOLD = 0.6  # distância máxima para considerar correspondência
