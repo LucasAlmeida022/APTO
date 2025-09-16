@@ -1,0 +1,89 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body, html {
+    height: 100%;
+    width: 100%;
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .left-side {
+    flex: 1;
+    background-color: #4169C1; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .right-side {
+    flex: 1;
+    background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+  }
+  
+  .login-box {
+    background-color: rgba(164, 160, 160, 0.1);
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(60, 35, 250, 0.3);
+    text-align: center;
+  }
+  
+  .login-box input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 6px;
+  }
+
+
+  .login-box h1 {
+    color: #000b15;
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 20px;
+  }
+  
+  .login-box label {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .login-box input[type="text"],
+  .login-box input[type="password"] {
+    margin-bottom: 20px;
+}
+  .login-box button {
+    background-color: #fff;
+    color: #000b15;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+  }
+  
+  .login-box button:hover {
+    background-color: #4169C1;
+    color: white;
+  }
+
+
+   .left-side img {
+    width: 300px;
+    height: 275px;
+  }

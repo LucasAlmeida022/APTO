@@ -1,0 +1,203 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+  }
+  
+  body, html {
+    height: 0;
+    width: 0;
+
+  }
+  
+  .container {
+    display: flex;
+    height: 100vh;
+    width: 100vw;
+  }
+  
+  .left-side {
+    flex: -1;
+    position:fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #4169C1; 
+    display: flex;
+    padding: 20px;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+  }
+
+
+  * {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 250px;
+  background-color: #3b5cb8;
+  color: white;
+  padding: 20px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.profile {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+
+.avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+}
+
+.username {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.menu {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.menu a,
+.logout {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  font-weight: 500;
+}
+
+.menu a.active,
+.menu a:hover,
+.logout:hover {
+  background-color: #2a4aa0;
+  border-radius: 8px;
+}
+
+.icon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.main-content {
+  flex-grow: 1;
+  background-color: white;
+  padding: 30px;
+}
+
+
+.linha-branca {
+  width: 90%;
+  height: 1px;
+  background-color: white;
+  margin: 20px auto;
+  border: 1px solid 
+}
+
+.right-side {
+  flex: 1;
+  margin-left: 250px;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+}
+
+/* Cards base */
+.card {
+  width: 260px;
+  height: 260px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Topo comum aos dois */
+.card-top {
+  background-color: #dcdcdc;
+  padding: 20px;
+}
+
+.card-top h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card-top p {
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Parte inferior com cor diferente por card */
+.card-bottom {
+  padding: 15px;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.card-bottom a {
+  margin-top: 10px;
+  background-color: #6c5ce7;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.card-bottom a:hover {
+  background-color: #9689f8;
+}
+
+/* Cores específicas */
+.card-bottom.azul {
+  background-color: #a29bfe;
+}
+
+.card-bottom.rosa {
+  background-color: #FF6A4D;
+}
+
+.card-bottom.rosa a {
+  background-color: #FF2400;
+}
+
+.card-bottom.rosa a:hover {
+  background-color: #ed6448;
+}
