@@ -129,128 +129,42 @@ body {
     justify-content: flex-start; /* <-- Alinha no topo */
     align-items: flex-start; /* <-- Alinha à esquerda */
     padding: 20px; /* <-- Adiciona espaçamento interno */
-    color: black;
+    color: rgb(118, 114, 114);
   }
 
-.cards {
-  display: flex;
-  gap: 20px;
-  justify-content: flex-start;
-  padding: 20px;
-  align-items: flex-start;
-  margin-left: 0;
 
+.right-side h1{
+    font-size: 29px;      /* aumenta o tamanho da fonte */
+    font-weight: bold;      /* deixa mais chamativo */
+    color: #333;
+    text-align:justify;     /* centraliza horizontalmente */
+    width:700px; 
+    height: 20px;    /* ocupa toda a largura do container */
+    margin-bottom: 70px;    /* espaçamento abaixo do título */
+    word-break: break-word; /
 }
 
-
-
-.card1{
-    width: 260px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    background-color: white;
-}
-
-
-
-.card1 p{
-    background-color: #d3d3d3cc;
-    padding: 20px;
-    font-weight: bold;
-    font-size: 18px;
-    color: black;
-    margin: 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
- 
-
-
-.botao1  {
-    background-color: #a29bfe;
-    border: none;
-    padding: 15px;
-    color: #555555;
-    font-size: 16px;
-    cursor: pointer;
+/* Tabela */
+table {
     width: 100%;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    transition: background-color 0.3s;
-  
-}
-
-.span, .lista {
-    margin-right: 180px;
-    font-size: 10px;
-    white-space: nowrap;
-    color: #ffff;
-}
-
-.botao1 span:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgb(121, 120, 120);
-    border: 50px;
-}
-
-
-
-
-
-
-
-.card2{
-    width: 260px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    border-collapse: collapse;
+    background-color: #fff;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    border-radius: 8px;
     overflow: hidden;
-    display: flex;
-    flex-direction: column;
 }
 
-
-.card2 p{
-    background-color: #d3d3d3cc;
-    padding: 20px;
-    font-weight: bold;
-    font-size: 18px;
-    color: black;
-    margin: 0;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-}
- 
-
-
-.botao2  {
-    background-color: #FF2400;
-    border: none;
-    padding: 15px;
-    color: #555555;
-    font-size: 16px;
-    cursor: pointer;
-    width: 100%;
-    border-bottom-left-radius: 10px;
-    border-bottom-right-radius: 10px;
-    transition: background-color 0.3s;
-  
+table th, table td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
 }
 
-.span, .lista {
-    margin-right: 180px;
-    font-size: 10px;
-    white-space: nowrap;
-    color: #ffff;
+table th {
+    background-color: #59595b;
+    color: #fff;
 }
 
-
-.botao2 span:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
-    border-radius: 10px;
+table tr:hover {
+    background-color: #f1f1f1;
 }
-
-
