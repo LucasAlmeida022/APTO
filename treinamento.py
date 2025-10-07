@@ -5,7 +5,7 @@ from os.path import join, isfile, isdir
 import pyodbc
 
 # Diretório com as fotos já recortadas em 180x180
-DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces" #troque o diretório de fotos
+DIR_FACES = r"C:\Users\Admin\ATP\Faces" #troque o diretório de fotos
 
 # Modo do detector: "hog" (rápido, CPU) ou "cnn" (mais preciso, pesado)
 MODO_FACE = "hog"
@@ -13,8 +13,8 @@ MODO_FACE = "hog"
 # String de conexão usando autenticação do Windows
 CONN_STR = (
     "DRIVER={ODBC Driver 18 for SQL Server};"
-    "SERVER=LUCAS;"        # ou "localhost\\SQLEXPRESS"
-    "DATABASE=APTO_TESTE;"
+    "SERVER=localhost;"        # ou "localhost\\SQLEXPRESS"
+    "DATABASE=apto;"
     "Trusted_Connection=yes;"      # indica autenticação do Windows
     "TrustServerCertificate=yes;"  # evita problemas de certificado SSL
     "Encrypt=yes;"
