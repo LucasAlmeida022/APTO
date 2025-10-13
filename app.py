@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, session, flash, redirect, url_for
 import face_recognition
 import numpy as np
 import base64
@@ -6,12 +6,13 @@ import cv2
 import pyodbc  
 
 app = Flask(__name__)
+app.secret_key = "uma_chave_secreta_qualquer"
 
 # Configurações do banco de dados
 CONN_STR = (
     "DRIVER={ODBC Driver 18 for SQL Server};" #drive necessário para realizar a conexão do banco de dados
-    "SERVER=LUCAS;"       #altetar o nome de acordo com o nome do SEU SERVER no SQLSERVER 
-    "DATABASE=APTO_TESTE;" #base de dados precisa aletarar para que estivemos usando no momento
+    "SERVER=localhost;"       #altetar o nome de acordo com o nome do SEU SERVER no SQLSERVER 
+    "DATABASE=APTO_DEFINITIVO7;" #base de dados precisa aletarar para que estivemos usando no momento
     "Trusted_Connection=yes;"      # indica autenticação do Windows não precisa altearr
     "TrustServerCertificate=yes;"  # evita problemas de certificado SSL,não precisa alterar
     "Encrypt=yes;" #sempre deve estar dessa forma
@@ -19,9 +20,10 @@ CONN_STR = (
 
 DIST_THRESHOLD = 0.6  # distância máxima para considerar correspondência
 
+
 # Carrega embeddings do banco de dados usando CNN
 def carregar_embeddings():
-    conn = pyodbc.connect(CONN_STR)
+    conn = pyodbc.connect(CONN_STR) 
     cursor = conn.cursor()
     cursor.execute("""
         SELECT e.ID_ALUNO, a.NOME, e.EMBEDDING
@@ -42,6 +44,107 @@ EMBEDDINGS = carregar_embeddings()
 @app.route('/')
 def index():
     return render_template('index.html')
+
+@app.route("/login/aluno", methods=["GET", "POST"])
+def login_aluno():
+    if request.method == "POST":
+        RA = request.form.get("RA")
+        SENHA = request.form.get("SENHA")
+
+        conn = pyodbc.connect(CONN_STR)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM ALUNOS WHERE RA = ?", (RA,))
+        aluno = cursor.fetchone()
+        conn.close()
+
+        if aluno and aluno[3].strip() == SENHA.strip():  # índice 3 = SENHA
+            session["usuario"] = aluno[1]  # índice 1 = NOME
+            session["ra"] = aluno[2]       # índice 2 = RA
+            session["tipo"] = "aluno"
+            return redirect(url_for("inicial_aluno"))
+        else:
+            flash("RA ou SENHA incorretos")
+            return redirect(url_for("login_aluno"))
+            
+    return render_template("login_aluno.html")
+
+
+@app.route("/login/professor", methods=["GET", "POST"])
+def login_professor():
+    if request.method == "POST":
+        EMAIL = request.form.get("EMAIL")
+        SENHA = request.form.get("SENHA")
+
+        conn = pyodbc.connect(CONN_STR)
+        cursor = conn.cursor()
+        cursor.execute("SELECT * FROM PROFESSORES WHERE EMAIL = ?", (EMAIL,))
+        professor = cursor.fetchone()
+        conn.close()
+
+        if professor and professor[3].strip() == SENHA.strip():  # índice 3 = SENHA
+            session["usuario"] = professor[1]  # índice 1 = NOME
+            session["email"] = professor[2]    # índice 2 = EMAIL
+            session["tipo"] = "professor"
+            return redirect(url_for("inicial_professor"))
+        else:
+            flash("Email ou senha incorretos")
+            return redirect(url_for("login_professor"))
+            
+    return render_template("login_professor.html")
+
+@app.route("/inicial_aluno")
+def inicial_aluno():
+    if session.get("tipo") != "aluno" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como aluno.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+    return render_template("inicial_aluno.html", nome=nome_usuario)
+
+@app.route("/chamado_aluno")
+def chamado_aluno():
+    if session.get("tipo") != "aluno" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como aluno.")
+        return redirect(url_for("login_aluno"))
+
+    nome_usuario = session.get("usuario")
+    return render_template("chamado_aluno.html", nome=nome_usuario)
+
+@app.route("/presenca_aluno")
+def presenca_aluno():
+    if session.get("tipo") != "aluno" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como aluno.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+    return render_template("inicial_aluno.html", nome=nome_usuario)
+
+@app.route("/inicial_professor")
+def inicial_professor():
+    if session.get("tipo") != "professor" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como professor.")
+        return redirect(url_for("login_professor"))
+    
+    nome_usuario = session.get("usuario")
+    return render_template("inicial_professor.html", nome=nome_usuario)
+
+@app.route("/disciplina_professor")
+def disciplina_professor():
+    if session.get("tipo") != "professor" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como professor.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+    return render_template("disciplina_professor.html", nome=nome_usuario)
+
+@app.route("/chamado_professor")
+def chamado_professor():
+    if session.get("tipo") != "professor" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como professor.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+    return render_template("chamado_professor.html", nome=nome_usuario)
 
 # Rota para reconhecimento facial
 @app.route('/reconhecer', methods=['POST'])
