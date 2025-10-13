@@ -5,7 +5,7 @@ from os.path import join, isfile, isdir
 import pyodbc
 
 # Diretório com as fotos já recortadas em 180x180
-DIR_FACES = r"C:\Users\lucas\OneDrive\Desktop\ATP\Faces" #troque o diretório de fotos
+DIR_FACES = r"C:\Users\Admin\Desktop\ATP\faces"  # troque para o diretório correto
 
 # Modo do detector: "hog" (rápido, CPU) ou "cnn" (mais preciso, pesado)
 MODO_FACE = "hog"
@@ -13,16 +13,31 @@ MODO_FACE = "hog"
 # String de conexão usando autenticação do Windows
 CONN_STR = (
     "DRIVER={ODBC Driver 18 for SQL Server};"
-    "SERVER=LUCAS;"        # ou "localhost\\SQLEXPRESS"
-    "DATABASE=APTO_TESTE;"
-    "Trusted_Connection=yes;"      # indica autenticação do Windows
-    "TrustServerCertificate=yes;"  # evita problemas de certificado SSL
+    "SERVER=localhost;"
+    "DATABASE=APTO_DEFINITIVO7;"
+    "Trusted_Connection=yes;"
+    "TrustServerCertificate=yes;"
     "Encrypt=yes;"
 )
+
+# Número base para RA automático
+RA_BASE = 111760000  # inicial 000111760000sp
+
+# Senha padrão para novos alunos
+SENHA_PADRAO = "senha123"
 
 def get_connection():
     """Cria uma conexão com o SQL Server"""
     return pyodbc.connect(CONN_STR)
+
+def gerar_ra_automatico(conn):
+    """Gera um RA automático único no formato 00011176XXXXsp"""
+    cursor = conn.cursor()
+    cursor.execute("SELECT COUNT(*) FROM ALUNOS")
+    count = cursor.fetchone()[0] + 1
+    ra_num = RA_BASE + count
+    ra_str = f"{ra_num:012d}sp"  # 12 dígitos + 'sp'
+    return ra_str
 
 def salvar_embedding(id_aluno, embedding, conn):
     """Salva um vetor facial (embedding) no banco"""
@@ -36,11 +51,11 @@ def salvar_embedding(id_aluno, embedding, conn):
     print(f"[OK] Embedding salvo para aluno ID {id_aluno}")
 
 def get_id_aluno(nome_aluno, conn):
-    """Busca ID_ALUNO pelo nome da pasta (nome do aluno). Se não existir, insere novo aluno."""
+    """Busca ID_ALUNO pelo nome da pasta (nome do aluno). Se não existir, insere novo aluno com RA automático"""
     if not nome_aluno or nome_aluno.strip() == "":
         raise ValueError("O nome do aluno não pode ser vazio")
 
-    nome_aluno = nome_aluno.strip()  # remove espaços extras
+    nome_aluno = nome_aluno.strip()
     cursor = conn.cursor()
 
     # Verifica se já existe (case-insensitive)
@@ -50,13 +65,15 @@ def get_id_aluno(nome_aluno, conn):
     if row:
         return row[0]
     else:
-        # Insere novo aluno
+        # Gera RA automático e insere aluno
+        ra_automatico = gerar_ra_automatico(conn)
         cursor.execute(
-            "INSERT INTO ALUNOS (NOME) OUTPUT INSERTED.ID_ALUNO VALUES (?)",
-            (nome_aluno,)
+            "INSERT INTO ALUNOS (NOME, RA, SENHA) OUTPUT INSERTED.ID_ALUNO VALUES (?, ?, ?)",
+            (nome_aluno, ra_automatico, SENHA_PADRAO)
         )
         id_aluno = cursor.fetchone()[0]
         conn.commit()
+        print(f"[OK] Novo aluno inserido: {nome_aluno} | RA: {ra_automatico}")
         return id_aluno
 
 def processar_faces(diretorio_faces):
@@ -82,7 +99,7 @@ def processar_faces(diretorio_faces):
                 print(f"  [PROCESSANDO] {filename}")
                 imagem = face_recognition.load_image_file(path)
 
-                # HOG detector (rápido, roda 100% em CPU)
+                # HOG detector
                 boxes = face_recognition.face_locations(imagem, model=MODO_FACE)
                 embeddings = face_recognition.face_encodings(imagem, boxes)
 
