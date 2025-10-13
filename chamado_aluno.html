@@ -78,6 +78,42 @@
       </div>
     </div>
   </div>
+
+  <div class="form-container">
+    <h2>Formulário de Reclamação</h2>
+    <form action="#" method="POST">
+      <label for="nome">Seu nome (opcional):</label>
+      <input type="text" id="nome" name="nome">
+
+      <label for="tipo_usuario">Você é:</label>
+      <select id="tipo_usuario" name="tipo_usuario" required>
+        <option value="">Selecione</option>
+        <option value="Aluno">Aluno</option>
+        <option value="Responsável">Responsável</option>
+        <option value="Professor">Professor</option>
+        <option value="Funcionário">Funcionário</option>
+      </select>
+
+      <label for="professor">Professor relacionado:</label>
+      <select id="professor" name="professor" required>
+        <option value="">Selecione</option>
+        <option value="maria">Profª Maria</option>
+        <option value="joao">Prof. João</option>
+        <option value="carla">Profª Carla</option>
+      </select>
+
+      <label for="assunto">Assunto da reclamação:</label>
+      <input type="text" id="assunto" name="assunto" required>
+
+      <label for="descricao">Descrição da reclamação:</label>
+      <textarea id="descricao" name="descricao" rows="5" required></textarea>
+
+      <label for="contato">E-mail ou telefone para contato (opcional):</label>
+      <input type="text" id="contato" name="contato">
+
+      <input type="submit" value="Enviar Reclamação">
+    </form>
+  </div>
   
 </body>
 </html>
