@@ -1,73 +1,85 @@
-let video;
-let resultado;
-let canvas, ctx;
+document.addEventListener("DOMContentLoaded", () => {
+  // Seleciona todos os botões que iniciam reconhecimento
+  document.querySelectorAll("[id^='startRecognitionBtn']").forEach(btn => {
+    btn.addEventListener("click", () => {
+      const num = btn.id.replace("startRecognitionBtn", ""); // ex: "1" ou "2"
+      startCameraRecognition(num);
+    });
+  });
+});
 
-//camera web do reconhecimento facial
-function startCameraRecognition() {
-  video = document.getElementById('video');
-  resultado = document.getElementById('resultado');
+function startCameraRecognition(num) {
+  const video = document.getElementById(`video${num}`);
+  const resultado = document.getElementById(`resultado${num}`);
+  const container = document.getElementById(`recognitionContainer${num}`);
 
-  // Cria canvas sobre o vídeo para desenhar o retângulo verde
-  canvas = document.createElement('canvas');
+  container.style.display = "block";
+
+  // Cria o canvas sobre o vídeo
+  const canvas = document.createElement("canvas");
   canvas.width = video.width;
   canvas.height = video.height;
-  canvas.style.position = 'absolute';
-  canvas.style.top = video.offsetTop + 'px';
-  canvas.style.left = video.offsetLeft + 'px';
-  document.body.appendChild(canvas);
-  ctx = canvas.getContext('2d');
+  canvas.style.position = "absolute";
+  canvas.style.top = video.offsetTop + "px";
+  canvas.style.left = video.offsetLeft + "px";
+  container.appendChild(canvas);
+  const ctx = canvas.getContext("2d");
 
-  //ativação do botão do reconhecimento facial que fica no html
+  // Ativa a câmera
   navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
     .then(stream => {
       video.srcObject = stream;
       video.play();
-      recognizeLoop();
-      const buttons = document.querySelectorAll('button');
-      buttons.forEach(btn => btn.style.display = 'none');
+
+      // Oculta todos os botões de "Iniciar presença" deste card
+      const buttons = container.parentElement.querySelectorAll("button");
+      buttons.forEach(b => b.style.display = "none");
+
+      // Inicia o loop de reconhecimento
+      recognizeLoop(video, resultado, ctx, canvas);
+    })
+    .catch(err => {
+      console.error("Erro ao acessar a câmera:", err);
+      resultado.textContent = "Erro ao acessar a câmera.";
     });
 }
 
-//captura cada frame do video e das imagens e compara para um resultado mais eficaz
-function captureFrame() {
-  const tempCanvas = document.createElement('canvas');
+function captureFrame(video) {
+  const tempCanvas = document.createElement("canvas");
   tempCanvas.width = video.videoWidth;
   tempCanvas.height = video.videoHeight;
-  const tempCtx = tempCanvas.getContext('2d');
+  const tempCtx = tempCanvas.getContext("2d");
   tempCtx.drawImage(video, 0, 0, tempCanvas.width, tempCanvas.height);
-  return tempCanvas.toDataURL('image/jpeg');
+  return tempCanvas.toDataURL("image/jpeg");
 }
 
-//deixa o reconhecimento rodando em loop
-function recognizeLoop() {
-  const imageData = captureFrame();
+function recognizeLoop(video, resultado, ctx, canvas) {
+  const imageData = captureFrame(video);
 
-  fetch('/reconhecer', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
+  fetch("/reconhecer", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ image: imageData })
   })
-  .then(response => response.json())
-  .then(data => {
-    // Limpa o canvas
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    .then(response => response.json())
+    .then(data => {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    if (data.length === 0) {
-      resultado.textContent = 'Nenhum rosto detectado.';
-    } else {
-      resultado.textContent = data.map(r => `${r.nome} `).join(', ');
+      if (!data || data.length === 0) {
+        resultado.textContent = "Nenhum rosto detectado.";
+      } else {
+        resultado.textContent = data.map(r => `${r.nome}`).join(", ");
+        data.forEach(r => {
+          const { top, right, bottom, left } = r.box;
+          ctx.strokeStyle = "lime";
+          ctx.lineWidth = 3;
+          ctx.strokeRect(left, top, right - left, bottom - top);
+        });
+      }
+    })
+    .catch(err => {
+      console.error("Erro no reconhecimento:", err);
+    });
 
-      // Desenhar retângulos verdes ao redor dos rostos
-      data.forEach(r => {
-        const { top, right, bottom, left } = r.box; // r.box deve vir do backend com coordenadas
-        ctx.strokeStyle = 'lime'; // verde
-        ctx.lineWidth = 3;
-        ctx.strokeRect(left, top, right - left, bottom - top);
-      });
-    }
-  });
-
-  setTimeout(recognizeLoop, 2000);
+  setTimeout(() => recognizeLoop(video, resultado, ctx, canvas), 2000);
 }
