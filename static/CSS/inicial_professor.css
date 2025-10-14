@@ -183,7 +183,7 @@ body {
   
 }
 
-.span, .conteudo {
+.span, .lista {
     margin-right: 180px;
     font-size: 10px;
     white-space: nowrap;
@@ -239,10 +239,11 @@ body {
   
 }
 
-.span, .conteudo {
+.span, .lista {
     margin-right: 180px;
     font-size: 10px;
     white-space: nowrap;
+    color: #ffff;
 }
 
 
