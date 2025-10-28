@@ -56,7 +56,7 @@ function captureFrame(video) {
 function recognizeLoop(video, resultado, ctx, canvas) {
   const imageData = captureFrame(video);
 
-  fetch("/reconhecer", {
+  fetch("/chamado_professor", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ image: imageData })
@@ -69,16 +69,10 @@ function recognizeLoop(video, resultado, ctx, canvas) {
         resultado.textContent = "Nenhum rosto detectado.";
       } else {
         resultado.textContent = data.map(r => `${r.nome}`).join(", ");
-        data.forEach(r => {
-          const { top, right, bottom, left } = r.box;
-          ctx.strokeStyle = "lime";
-          ctx.lineWidth = 3;
-          ctx.strokeRect(left, top, right - left, bottom - top);
-        });
       }
     })
     .catch(err => {
-      console.error("Erro no reconhecimento:", err);
+    console.error("Erro no reconhecimento:", err);
     });
 
   setTimeout(() => recognizeLoop(video, resultado, ctx, canvas), 2000);

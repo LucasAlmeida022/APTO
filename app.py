@@ -137,43 +137,44 @@ def disciplina_professor():
     nome_usuario = session.get("usuario")
     return render_template("disciplina_professor.html", nome=nome_usuario)
 
-@app.route("/chamado_professor")
+@app.route("/chamado_professor", methods=["GET", "POST"])
 def chamado_professor():
+    # Verifica se é professor logado
     if session.get("tipo") != "professor" or not session.get("usuario"):
         flash("Acesso negado. Faça login como professor.")
         return redirect(url_for("login_aluno"))
     
-    nome_usuario = session.get("usuario")
-    return render_template("chamado_professor.html", nome=nome_usuario)
-
-# Rota para reconhecimento facial
-@app.route('/reconhecer', methods=['POST'])
-def reconhecer():
-    data = request.get_json()
-    image_data = data['image'].split(',')[1]  # remove "data:image/jpeg;base64,"
-    img_bytes = base64.b64decode(image_data)
-    np_arr = np.frombuffer(img_bytes, np.uint8)
-    img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-    rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
-
-    # Detecta rostos
-    face_locations = face_recognition.face_locations(rgb_img)
+    # Se for GET → só mostra a página
+    if request.method == "GET":
+        nome_usuario = session.get("usuario")
+        return render_template("chamado_professor.html", nome=nome_usuario)
     
-    # Extrai embeddings usando CNN
-    face_encodings = face_recognition.face_encodings(rgb_img, face_locations, model="cnn")
+    # Se for POST → executa reconhecimento facial
+    elif request.method == "POST":
+        data = request.get_json()
+        image_data = data['image'].split(',')[1]  # remove "data:image/jpeg;base64,"
+        img_bytes = base64.b64decode(image_data)
+        np_arr = np.frombuffer(img_bytes, np.uint8)
+        img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
+        rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-    resultados = []
+        # Detecta rostos
+        face_locations = face_recognition.face_locations(rgb_img)
+        # Extrai embeddings usando CNN
+        face_encodings = face_recognition.face_encodings(rgb_img, face_locations, model="cnn")
 
-    for encoding in face_encodings:
-        distancias = [np.linalg.norm(encoding - e[2]) for e in EMBEDDINGS]
-        if distancias:
-            min_dist = min(distancias)
-            index = distancias.index(min_dist)
-            if min_dist < DIST_THRESHOLD:
-                id_aluno, nome, _ = EMBEDDINGS[index]
-                resultados.append({'id': id_aluno, 'nome': nome, 'distancia': float(min_dist)})
+        resultados = []
 
-    return jsonify(resultados)
+        for encoding in face_encodings:
+            distancias = [np.linalg.norm(encoding - e[2]) for e in EMBEDDINGS]
+            if distancias:
+                min_dist = min(distancias)
+                index = distancias.index(min_dist)
+                if min_dist < DIST_THRESHOLD:
+                    id_aluno, nome, _ = EMBEDDINGS[index]
+                    resultados.append({'id': id_aluno, 'nome': nome, 'distancia': float(min_dist)})
+
+        return jsonify(resultados)
 
 if __name__ == '__main__':
     app.run(debug=True)
