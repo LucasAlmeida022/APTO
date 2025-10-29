@@ -119,163 +119,85 @@ body {
   border: 1px solid 
 }
 
-
 .right-side {
   flex: 1;
   margin-left: 250px;
-  margin-bottom: 20px;
-  background-size: cover;
+  padding: 20px;
   display: flex;
-  flex-direction: column; /* <-- Faz empilhar os elementos na vertical */
-  justify-content: flex-start; /* <-- Alinha no topo */
-  align-items: flex-start; /* <-- Alinha à esquerda */
-  padding: 20px; /* <-- Adiciona espaçamento interno */
-  color: black;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 
 .cards {
-      display: flex;
-      gap: 30px;
-      flex-wrap: wrap;
+  display: flex;
+  gap: 20px;
 }
 
-.card1 {
-  background: #a29bfe;
+/* Cards base */
+.card {
+  width: 260px;
+  height: 260px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Topo comum aos dois */
+.card-top {
+  background-color: #dcdcdc;
+  padding: 20px;
+}
+
+.card-top h3 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.card-top p {
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Parte inferior com cor diferente por card */
+.card-bottom {
+  padding: 15px;
   color: white;
-  width: 180px;
-  border-radius: 20px;
-  padding: 20px 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-.title{
-  color: #ffff;
-   
-}
-
-.subtitle{
-  color: #ffffff91
-}
-
-
-
-.botao1 {
+.card-bottom a {
   margin-top: 10px;
   background-color: #6c5ce7;
   color: white;
   padding: 10px 20px;
   border-radius: 10px;
-  border: none;
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease;
 }
 
-.botao1:hover {
+.card-bottom a:hover {
   background-color: #9689f8;
 }
 
-.icon-circle {
-  background-color: white;
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* Cores específicas */
+.card-bottom.azul {
+  background-color: #a29bfe;
 }
 
-.icon-circle svg {
-  width: 40px;
-  height: 40px;
-  stroke: rgb(0, 0, 0);
+.card-bottom.rosa {
+  background-color: #FF6A4D;
 }
 
-.card .title {
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 1em;
+.card-bottom.rosa a {
+  background-color: #FF2400;
 }
 
-.card .subtitle {
-  font-size: 0.85em;
-  margin-bottom: 15px;
-}
-
-.card .button-text {
-  font-size: 0.9em;
-}
-
-
-.card2 {
-  background: #fab1a0;
-  color: white;
-  width: 180px;
-  border-radius: 20px;
-  padding: 20px 10px;
-  text-align: center;
-  margin-bottom: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-}
-
-.title2{
-  color: #ffff;
-   
-}
-
-.subtitle2{
-  color: #ffffff91
-}
-
-
-
-.botao2 {
-  margin-top: 10px;
-  background-color: #ff7675;
-  color: white;
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  text-decoration: none;
-  font-weight: bold;
-  transition: background-color 0.3s ease;
-}
-
-.botao2:hover {
-  background-color: #ffb7a7;
-}
-
-.icon-circle {
-  background-color: white;
-  border-radius: 50%;
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.icon-circle svg {
-  width: 40px;
-  height: 40px;
-  stroke: rgb(0, 0, 0);
-}
-
-.card2 .title {
-  font-weight: bold;
-  margin-bottom: 5px;
-  font-size: 1em;
-}
-
-.card2 .subtitle {
-  font-size: 0.85em;
-  margin-bottom: 15px;
-}
-
-.card2 .button-text {
-  font-size: 0.9em;
+.card-bottom.rosa a:hover {
+  background-color: #ed6448;
 }
