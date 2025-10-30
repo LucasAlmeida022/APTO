@@ -61,7 +61,7 @@ def login_aluno():
             session["usuario"] = aluno[1]  # índice 1 = NOME
             session["ra"] = aluno[2]       # índice 2 = RA
             session["tipo"] = "aluno"
-            return redirect(url_for("inicial_aluno"))
+            return redirect(url_for("presenca_aluno"))
         else:
             flash("RA ou SENHA incorretos")
             return redirect(url_for("login_aluno"))
@@ -119,6 +119,40 @@ def presenca_aluno():
     nome_usuario = session.get("usuario")
     return render_template("inicial_aluno.html", nome=nome_usuario)
 
+@app.route("/formulario1_aluno")
+def formulario1_aluno():
+    if session.get("tipo") != "aluno" or not session.get("usuario"):
+        flash("Acesso negado. Faça login com aluno.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+
+    conn = pyodbc.connect(CONN_STR)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT a.NOME, t.NOME
+        FROM ALUNOS a
+        INNER JOIN TURMAS t ON a.ID_TURMA = t.ID_TURMA
+        WHERE a.NOME = ?
+    """, (nome_usuario,))
+    resultado = cursor.fetchone()
+    conn.close()
+
+    nome_usuario = resultado[0] if resultado else nome_usuario
+    serie_usuario = resultado[1] if resultado else "Turma não definida"
+
+    return render_template("formulario1_aluno.html", nome=nome_usuario, serie=serie_usuario)
+
+@app.route("/formulario2_aluno")
+def formulario2_aluno():
+    if session.get("tipo") !="aluno" or not session.get("usuario"):
+        flash("Acesso negado. Faça login com aluno.")
+        return redirect(url_for("login_aluno"))
+    
+    nome_usuario = session.get("usuario")
+    serie_usuario = session.get("serie")
+    return render_template("formulario2_aluno.html", nome=nome_usuario, serie=serie_usuario)
+
 @app.route("/inicial_professor")
 def inicial_professor():
     if session.get("tipo") != "professor" or not session.get("usuario"):
@@ -128,28 +162,16 @@ def inicial_professor():
     nome_usuario = session.get("usuario")
     return render_template("inicial_professor.html", nome=nome_usuario)
 
-@app.route("/disciplina_professor")
+@app.route("/disciplina_professor", methods=["GET", "POST"])
 def disciplina_professor():
     if session.get("tipo") != "professor" or not session.get("usuario"):
         flash("Acesso negado. Faça login como professor.")
-        return redirect(url_for("login_aluno"))
-    
-    nome_usuario = session.get("usuario")
-    return render_template("disciplina_professor.html", nome=nome_usuario)
+        return redirect(url_for("login_professor"))
 
-@app.route("/chamado_professor", methods=["GET", "POST"])
-def chamado_professor():
-    # Verifica se é professor logado
-    if session.get("tipo") != "professor" or not session.get("usuario"):
-        flash("Acesso negado. Faça login como professor.")
-        return redirect(url_for("login_aluno"))
-    
-    # Se for GET → só mostra a página
     if request.method == "GET":
         nome_usuario = session.get("usuario")
-        return render_template("chamado_professor.html", nome=nome_usuario)
-    
-    # Se for POST → executa reconhecimento facial
+        return render_template("disciplina_professor.html", nome=nome_usuario)
+
     elif request.method == "POST":
         data = request.get_json()
         image_data = data['image'].split(',')[1]  # remove "data:image/jpeg;base64,"
@@ -158,9 +180,7 @@ def chamado_professor():
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
         rgb_img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
-        # Detecta rostos
         face_locations = face_recognition.face_locations(rgb_img)
-        # Extrai embeddings usando CNN
         face_encodings = face_recognition.face_encodings(rgb_img, face_locations, model="cnn")
 
         resultados = []
@@ -175,6 +195,37 @@ def chamado_professor():
                     resultados.append({'id': id_aluno, 'nome': nome, 'distancia': float(min_dist)})
 
         return jsonify(resultados)
+
+
+
+@app.route("/chamado_professor", methods=["GET", "POST"])
+def chamado_professor():
+    if session.get("tipo") != "professor" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como professor.")
+        return redirect(url_for("login_professor"))
+    
+    if request.method == "GET":
+        nome_usuario = session.get("usuario")
+        return render_template("chamado_professor.html", nome=nome_usuario)
+    
+@app.route("/lista")
+def lista():
+    if session.get("tipo") != "professor" or not session.get("usuario"):
+        flash("Acesso negado. Faça login como professor.")
+        return redirect(url_for("login_professor"))
+
+    nome_usuario = session.get("usuario")
+
+    # Conecta ao banco de dados e busca os alunos
+    conn = pyodbc.connect(CONN_STR)
+    cursor = conn.cursor()
+    cursor.execute("SELECT RA, NOME FROM ALUNOS")
+    alunos = [{"RA": row[0], "NOME": row[1]} for row in cursor.fetchall()]
+    conn.close()
+
+    # Renderiza a página com o nome do professor e a lista de alunos
+    return render_template("lista.html", nome=nome_usuario, alunos=alunos)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

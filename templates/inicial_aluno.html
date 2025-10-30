@@ -19,7 +19,7 @@
   </div>
    <nav class="menu">
     
-    <a href="{{ url_for('inicial_aluno') }}" class="meu-botao">
+    <a href="{{ url_for('presenca_aluno') }}" class="meu-botao">
       <i class="icon"> 
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
           <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6m-5.784 6A2.24 2.24 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.3 6.3 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5"/>
@@ -52,45 +52,68 @@
    
    
  <div class="right-side">
-  <div class="cards">
-    <div class="card1">
-      <p>3B-EM-TARDE-2025 <br>MOBILE</p>
-      <button class="botao1" onclick="location.href='https://educacaoprofissional.educacao.sp.gov.br/course/view.php?id=296'">
-        <span class="conteudo">Conteúdo</span>
-      </button>
-    </div>
+ <h1>Boletim Escolar</h1>
 
-    <div class="card2">
-      <p>3B-EM-TARDE-2025<br>BACK-END</p>
-      <button class="botao2" onclick="location.href='https://educacaoprofissional.educacao.sp.gov.br/course/view.php?id=296'">
-        <span class="conteudo">Conteúdo</span>
-      </button>
-    </div>
-
-    <div class="card3">
-      <p>3B-EM-TARDE-2025<br>BANCO DE DADOS</p>
-      <button class="botao3" onclick="location.href='https://educacaoprofissional.educacao.sp.gov.br/course/view.php?id=296'">
-        <span class="conteudo">Conteúdo</span>
-      </button>
-    </div>
-
-    <div class="card4">
-      <p>3B-EM-TARDE-2025<br>FRONT-END</p>
-      <button class="botao4" onclick="location.href='https://educacaoprofissional.educacao.sp.gov.br/course/view.php?id=296'">
-        <span class="conteudo">Conteúdo</span>
-      </button>
-    </div>
-
-    <div class="card5">
-      <p>3B-EM-TARDE-2025<br>PROJETO MULTIDISCIPLINAR</p>
-      <button class="botao5" onclick="location.href='https://educacaoprofissional.educacao.sp.gov.br/course/view.php?id=296'">
-        <span class="conteudo">Conteúdo</span>
-      </button>
-    </div>
+  <div class="tabs">
+    <button class="tab active" onclick="showTab(1)">1º Bimestre</button>
+    <button class="tab" onclick="showTab(2)">2º Bimestre</button>
+    <button class="tab" onclick="showTab(3)">3º Bimestre</button>
+    <button class="tab" onclick="showTab(4)">4º Bimestre</button>
   </div>
-</div>
 
-    
+  <div class="content" id="content">
+    <!-- conteúdo do boletim muda aqui -->
+  </div>
+
+  <script>
+    const boletins = {
+      1: `
+        <table>
+          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
+          <tr><td>Matemática</td><td>8.5</td><td>98%</td></tr>
+          <tr><td>Português</td><td>9.0</td><td>95%</td></tr>
+          <tr><td>Biologia</td><td>8.0</td><td>97%</td></tr>
+        </table>
+      `,
+      2: `
+        <table>
+          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
+          <tr><td>Matemática</td><td>7.8</td><td>94%</td></tr>
+          <tr><td>Português</td><td>8.2</td><td>96%</td></tr>
+          <tr><td>Biologia</td><td>8.5</td><td>97%</td></tr>
+        </table>
+      `,
+      3: `
+        <table>
+          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
+          <tr><td>Matemática</td><td>9.2</td><td>99%</td></tr>
+          <tr><td>Português</td><td>8.7</td><td>97%</td></tr>
+          <tr><td>Biologia</td><td>9.0</td><td>98%</td></tr>
+        </table>
+      `,
+      4: `
+        <table>
+          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
+          <tr><td>Matemática</td><td>8.9</td><td>96%</td></tr>
+          <tr><td>Português</td><td>9.3</td><td>97%</td></tr>
+          <tr><td>Biologia</td><td>8.8</td><td>98%</td></tr>
+        </table>
+      `
+    };
+
+    const content = document.getElementById('content');
+    content.innerHTML = boletins[1]; // mostra o 1º bimestre por padrão
+
+    function showTab(num) {
+      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+      document.querySelector(`.tab:nth-child(${num})`).classList.add('active');
+      content.innerHTML = boletins[num];
+    }
+  </script>
+
+
+</div> <!-- .right-side -->
+
     
 </body>
 </html>

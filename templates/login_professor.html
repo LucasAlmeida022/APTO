@@ -9,7 +9,7 @@
 <body>
   <div class="container">
     <div class="left-side">
-      <img src="{{ url_for('static', filename='img/icone.png') }}" alt="Logo">
+      <img src="{{ url_for('static', filename='imagens/icone.png') }}" alt="Logo">
     </div>
 
     <div class="right-side">
@@ -27,8 +27,8 @@
         {% endwith %}
         
         <form action="{{ url_for('login_professor') }}" method="POST">
-          <input type="text" name="EMAIL" placeholder="email do Professor" required />
-          <input type="password" name="SENHA" placeholder="senha" required />
+          <input type="text" name="EMAIL" placeholder="Email do Professor" required />
+          <input type="password" name="SENHA" placeholder="Senha" required />
           <button type="submit" class="botao">Entrar</button>
         </form>
 

@@ -56,7 +56,7 @@ function captureFrame(video) {
 function recognizeLoop(video, resultado, ctx, canvas) {
   const imageData = captureFrame(video);
 
-  fetch("/chamado_professor", {
+  fetch("/disciplina_professor", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ image: imageData })
