@@ -161,6 +161,19 @@ body {
   font-weight: bold;
 }
 
+.card1 p{
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #a09d9d;
+}
+
+.card2 p{
+  margin-top: 5px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #a09d9d;
+}
 /* Parte inferior com cor diferente por card */
 .card-bottom {
   padding: 15px;

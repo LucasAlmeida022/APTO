@@ -135,8 +135,8 @@ body {
 
 
 .card {
-  width: 260px;
-  height: 260px;
+  width: 270px;
+  height: 270px;
   border-radius: 10px;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
@@ -158,6 +158,8 @@ body {
   margin-top: 5px;
   font-size: 18px;
   font-weight: bold;
+  color: #a09d9d;
+
 }
 
 
