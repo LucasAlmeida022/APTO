@@ -169,6 +169,8 @@ body {
  
 
 
+
+
 .botao1  {
     background-color: #a29bfe;
     border: none;
@@ -184,7 +186,7 @@ body {
 }
 
 .span, .lista {
-    margin-right: 180px;
+    margin-left: 0px;
     font-size: 10px;
     white-space: nowrap;
     color: #ffff;
@@ -192,13 +194,17 @@ body {
 
 .botao1 span:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgb(121, 120, 120);
-    border: 50px;
+    box-shadow: #8c85f4;
+    border-radius: 10px;
 }
 
 
-
-
+.card1 span {
+    margin-right: 200px;
+    font-size: 10px;
+    white-space: nowrap;
+    color: #ffff;
+}
 
 
 
@@ -239,8 +245,8 @@ body {
   
 }
 
-.span, .lista {
-    margin-right: 180px;
+.card2 span {
+    margin-right: 200px;
     font-size: 10px;
     white-space: nowrap;
     color: #ffff;
@@ -249,7 +255,7 @@ body {
 
 .botao2 span:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    box-shadow: 0 8px 16px rgba(187, 66, 64, 0.918);
     border-radius: 10px;
 }
 

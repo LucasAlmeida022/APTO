@@ -51,64 +51,34 @@
    
    
 <div class="right-side">
- <h1>Boletim Escolar</h1>
+ <div class="boletim">
+  <h2>Boletim Escolar</h2>
 
-  <div class="tabs">
-    <button class="tab active" onclick="showTab(1)">1º Bimestre</button>
-    <button class="tab" onclick="showTab(2)">2º Bimestre</button>
-    <button class="tab" onclick="showTab(3)">3º Bimestre</button>
-    <button class="tab" onclick="showTab(4)">4º Bimestre</button>
+  <div class="materia">
+    <span>Back-End</span>
+    <span class="freq">92%</span>
   </div>
 
-  <div class="content" id="content">
-    <!-- conteúdo do boletim muda aqui -->
+  <div class="materia">
+    <span>Mobile</span>
+    <span class="freq">88%</span>
   </div>
 
-  <script>
-    const boletins = {
-      1: `
-        <table>
-          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
-          <tr><td>Matemática</td><td>8.5</td><td>98%</td></tr>
-          <tr><td>Português</td><td>9.0</td><td>95%</td></tr>
-          <tr><td>Biologia</td><td>8.0</td><td>97%</td></tr>
-        </table>
-      `,
-      2: `
-        <table>
-          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
-          <tr><td>Matemática</td><td>7.8</td><td>94%</td></tr>
-          <tr><td>Português</td><td>8.2</td><td>96%</td></tr>
-          <tr><td>Biologia</td><td>8.5</td><td>97%</td></tr>
-        </table>
-      `,
-      3: `
-        <table>
-          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
-          <tr><td>Matemática</td><td>9.2</td><td>99%</td></tr>
-          <tr><td>Português</td><td>8.7</td><td>97%</td></tr>
-          <tr><td>Biologia</td><td>9.0</td><td>98%</td></tr>
-        </table>
-      `,
-      4: `
-        <table>
-          <tr><th>Disciplina</th><th>Nota</th><th>Frequência</th></tr>
-          <tr><td>Matemática</td><td>8.9</td><td>96%</td></tr>
-          <tr><td>Português</td><td>9.3</td><td>97%</td></tr>
-          <tr><td>Biologia</td><td>8.8</td><td>98%</td></tr>
-        </table>
-      `
-    };
+  <div class="materia">
+    <span>Modelagem de Banco de Dados</span>
+    <span class="freq">95%</span>
+  </div>
 
-    const content = document.getElementById('content');
-    content.innerHTML = boletins[1]; // mostra o 1º bimestre por padrão
+  <div class="materia">
+    <span>Front-End</span>
+    <span class="freq">90%</span>
+  </div>
 
-    function showTab(num) {
-      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
-      document.querySelector(`.tab:nth-child(${num})`).classList.add('active');
-      content.innerHTML = boletins[num];
-    }
-  </script>
+  <div class="materia">
+    <span>Projeto Multidisciplinar</span>
+    <span class="freq">97%</span>
+  </div>
+</div>
 
 
 </div> <!-- .right-side -->
