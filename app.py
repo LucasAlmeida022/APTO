@@ -150,7 +150,21 @@ def formulario2_aluno():
         return redirect(url_for("login_aluno"))
     
     nome_usuario = session.get("usuario")
-    serie_usuario = session.get("serie")
+
+    conn = pyodbc.connect(CONN_STR)
+    cursor = conn.cursor()
+    cursor.execute("""
+        SELECT a.NOME, t.NOME
+        FROM ALUNOS a
+        INNER JOIN TURMAS t ON a.ID_TURMA = t.ID_TURMA
+        WHERE a.NOME = ?
+    """, (nome_usuario,))
+    resultado = cursor.fetchone()
+    conn.close()
+
+    nome_usuario = resultado[0] if resultado else nome_usuario
+    serie_usuario = resultado[1] if resultado else "Turma não definida"
+
     return render_template("formulario2_aluno.html", nome=nome_usuario, serie=serie_usuario)
 
 @app.route("/inicial_professor")
